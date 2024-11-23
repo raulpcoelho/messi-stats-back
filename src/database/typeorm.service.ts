@@ -2,7 +2,14 @@ import { OnModuleInit } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
 import { Match } from '../matches/entities/match.entity';
-import { CreateMatchTable1732253421084 } from './migrations/1732253421084-CreateMatchTable';
+import { Competition } from '../competitions/entities/competition.entity';
+import { Season } from '../seasons/entities/season.entity';
+import { Team } from '../teams/entities/team.entity';
+import { CreateTables1732337440742 } from './migrations/1732337440742-CreateTables';
+import { Competitions1732338967859 } from './seeds/1732338967859-Competitions';
+import { Seasons1732339620799 } from './seeds/1732339620799-Seasons';
+import { Teams1732339964861 } from './seeds/1732339964861-Teams';
+import { Matches1732340454118 } from './seeds/1732340454118-Matches';
 
 config(); // use dotenv to make sure the environment variables are loaded before using it.
 
@@ -15,8 +22,14 @@ export class TypeOrmService extends DataSource implements OnModuleInit {
       username: process.env.TYPEORM_USERNAME,
       password: process.env.TYPEORM_PASSWORD,
       database: process.env.TYPEORM_DATABASE,
-      entities: [Match],
-      migrations: [CreateMatchTable1732253421084],
+      entities: [Competition, Match, Season, Team],
+      migrations: [
+        CreateTables1732337440742,
+        Competitions1732338967859,
+        Seasons1732339620799,
+        Teams1732339964861,
+        Matches1732340454118,
+      ],
       synchronize: false,
       logging: false,
     });

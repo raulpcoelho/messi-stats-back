@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Team } from '../../teams/entities/team.entity';
+import { Competition } from '../../competitions/entities/competition.entity';
+import { Season } from '../../seasons/entities/season.entity';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
 @Entity({ name: 'matches' })
 export class Match {
@@ -8,20 +11,24 @@ export class Match {
   @Column({ name: 'match_date', type: 'date', nullable: true })
   matchDate: Date;
 
-  @Column({ name: 'season', length: 11, nullable: true })
-  season: string;
+  @ManyToOne(() => Season, season => season.matches)
+  @JoinColumn({ name: 'season_id' })
+  season: Relation<Season>;
 
-  @Column({ name: 'competition', length: 30, nullable: true })
-  competition: string;
+  @ManyToOne(() => Competition, competition => competition.matches)
+  @JoinColumn({ name: 'competition_id' })
+  competition: Relation<Competition>;
 
   @Column({ name: 'home', nullable: true })
   home: boolean;
 
-  @Column({ name: 'team', length: 30, nullable: true })
-  team: string;
+  @ManyToOne(() => Team, team => team.matchesWithMessi)
+  @JoinColumn({ name: 'team_id' })
+  team: Relation<Team>;
 
-  @Column({ name: 'opponent', length: 30, nullable: true })
-  opponent: string;
+  @ManyToOne(() => Team, team => team.matchesAgainstMessi)
+  @JoinColumn({ name: 'opponent_id' })
+  opponent: Relation<Team>;
 
   @Column({ name: 'team_score', nullable: true })
   teamScore: number;
