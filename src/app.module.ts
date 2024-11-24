@@ -4,9 +4,10 @@ import { MatchesModule } from './matches/matches.module';
 import { SeasonsModule } from './seasons/seasons.module';
 import { CompetitionsModule } from './competitions/competitions.module';
 import { TeamsModule } from './teams/teams.module';
+import { TotalsModule } from './totals/totals.module';
 
 @Module({
-  imports: [DatabaseModule, MatchesModule, SeasonsModule, CompetitionsModule, TeamsModule],
+  imports: [DatabaseModule, MatchesModule, SeasonsModule, CompetitionsModule, TeamsModule, TotalsModule],
   controllers: [],
   providers: [],
 })

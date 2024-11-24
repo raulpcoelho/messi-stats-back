@@ -8,6 +8,5 @@ import { DatabaseModule } from 'src/database/database.module';
   imports: [DatabaseModule],
   controllers: [MatchesController],
   providers: [MatchesService, TypeOrmService],
-  exports: [MatchesService],
 })
 export class MatchesModule {}
