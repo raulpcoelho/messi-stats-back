@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmService } from './typeorm.service';
+import { MatchesRepository } from 'src/matches/matches.repository';
+import { TypeOrmMatchesRepository } from './repositories/typeorm.matches.repository';
 
 @Module({
-  providers: [TypeOrmService],
+  providers: [TypeOrmService, { provide: MatchesRepository, useClass: TypeOrmMatchesRepository }],
+  exports: [MatchesRepository],
 })
 export class DatabaseModule {}
