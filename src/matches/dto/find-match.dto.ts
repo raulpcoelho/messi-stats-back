@@ -92,4 +92,9 @@ export class FindMatchDto {
   @IsBoolean()
   @Transform(({ value }) => JSON.parse(value))
   motm: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
+  year: number;
 }

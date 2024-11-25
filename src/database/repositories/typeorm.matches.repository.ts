@@ -33,12 +33,19 @@ export class TypeOrmMatchesRepository implements MatchesRepository {
     if (value === undefined && value === null) {
       return;
     }
-    let query = '';
+
+    let query;
+    if (key === 'year') {
+      query = `EXTRACT(YEAR FROM m.matchDate) = :year`;
+      queryBuilder.andWhere(query, { year: value });
+      return;
+    }
     if (['season', 'competition', 'team', 'opponent'].includes(key)) {
       query = `${key}.name = :${key}`;
-    } else {
-      query = `m.${key} = :${key}`;
+      queryBuilder.andWhere(query, { [key]: value });
+      return;
     }
+    query = `m.${key} = :${key}`;
     queryBuilder.andWhere(query, { [key]: value });
   }
 }
