@@ -5,96 +5,96 @@ export class FindMatchDto {
   @IsOptional()
   @IsDate()
   @Transform(({ value }) => new Date(value))
-  matchDate: Date;
+  matchDate?: Date;
 
   @IsOptional()
   @IsString()
-  season: string;
+  season?: string;
 
   @IsOptional()
   @IsString()
-  competition: string;
+  competition?: string;
 
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => JSON.parse(value))
-  home: boolean;
+  home?: boolean;
 
   @IsOptional()
   @IsString()
-  team: string;
+  team?: string;
 
   @IsOptional()
   @IsString()
-  opponent: string;
+  opponent?: string;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  goals: number;
+  goals?: number;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  assists: number;
+  assists?: number;
 
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => JSON.parse(value))
-  started: boolean;
+  started?: boolean;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  pensScored: number;
+  pensScored?: number;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  pensMissed: number;
+  pensMissed?: number;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  hatTricks: number;
+  hatTricks?: number;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  freeKicks: number;
+  freeKicks?: number;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  insideBox: number;
+  insideBox?: number;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  outsideBox: number;
+  outsideBox?: number;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  left: number;
+  left?: number;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  right: number;
+  right?: number;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  head: number;
+  head?: number;
 
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => JSON.parse(value))
-  motm: boolean;
+  motm?: boolean;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
-  year: number;
+  year?: number;
 }

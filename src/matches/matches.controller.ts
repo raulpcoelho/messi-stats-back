@@ -1,18 +1,22 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Query, Res } from '@nestjs/common';
 import { MatchesService } from './matches.service';
 import { FindMatchDto } from './dto/find-match.dto';
 import { MatchDto } from './dto/match.dto';
+import { Response } from 'express';
 
 @Controller('matches')
 export class MatchesController {
   constructor(private readonly matchesService: MatchesService) {}
 
   @Get()
-  async findAllFiltered(@Query() findMatchDto: FindMatchDto): Promise<MatchDto[] | { error: string }> {
+  async findAllFiltered(@Res() res: Response, @Query() findMatchDto: FindMatchDto): Promise<Response<MatchDto[]>> {
     try {
-      return await this.matchesService.findAllFiltered(findMatchDto);
+      const matches: MatchDto[] = await this.matchesService.findAllFiltered(findMatchDto);
+      return res.status(HttpStatus.OK).json(matches);
     } catch (error) {
-      return { error: 'An error occurred while trying to fetch matches' };
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ error: 'An error occurred while trying to fetch matches' });
     }
   }
 }
