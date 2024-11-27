@@ -28,12 +28,7 @@ describe('/matches = the matches controller', () => {
     service = module.get<MatchesService>(MatchesService);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-    expect(service).toBeDefined();
-  });
-
-  it('should return all matches that satisfy the filter when findAllFiltered is called', async () => {
+  it('should return all matches that satisfy the filter when called(200)', async () => {
     const expectedMatches: MatchDto[] = [
       {
         matchDate: new Date('2011-03-08'),
@@ -89,8 +84,6 @@ describe('/matches = the matches controller', () => {
       },
     ];
 
-    jest.spyOn(service, 'findAllFiltered').mockResolvedValue(expectedMatches);
-
     const findMatchDto: FindMatchDto = {
       year: 2011,
       opponent: 'Arsenal',
@@ -103,13 +96,28 @@ describe('/matches = the matches controller', () => {
     expect(fakeResponse.json).toHaveBeenCalledWith(expectedMatches);
   });
 
-  it('should return an error object when findAllFiltered throws an error', async () => {
+  it('should return an empty array when no matches satisfy the filters (200)', async () => {
+    const findMatchDto: FindMatchDto = {
+      year: 2016,
+      opponent: 'Manchester City',
+      goals: 0,
+    };
+
+    jest.spyOn(service, 'findAllFiltered').mockResolvedValue([]);
+
+    await controller.findAllFiltered(fakeResponse, findMatchDto);
+
+    expect(fakeResponse.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(fakeResponse.json).toHaveBeenCalledWith([]);
+  });
+
+  it('should return an error object when an error occurs (500)', async () => {
     const findMatchDto: FindMatchDto = {
       year: 2011,
       opponent: 'Arsenal',
     };
 
-    jest.spyOn(service, 'findAllFiltered').mockRejectedValue(new Error('An error occurred'));
+    jest.spyOn(service, 'findAllFiltered').mockRejectedValue(new Error(''));
 
     await controller.findAllFiltered(fakeResponse, findMatchDto);
 
