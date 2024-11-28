@@ -17,7 +17,8 @@ export class TypeOrmMatchesRepository implements MatchesRepository {
       .innerJoinAndSelect('m.season', 'season')
       .innerJoinAndSelect('m.competition', 'competition')
       .innerJoinAndSelect('m.team', 'team')
-      .innerJoinAndSelect('m.opponent', 'opponent');
+      .innerJoinAndSelect('m.opponent', 'opponent')
+      .orderBy('m.matchDate', 'DESC');
 
     if (findMatchDto) {
       Object.keys(findMatchDto).forEach(key => {
