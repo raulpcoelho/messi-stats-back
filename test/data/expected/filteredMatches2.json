@@ -1,0 +1,28 @@
+[
+  {
+    "matchDate": "2022-11-30",
+    "season": "2022-2023",
+    "competition": "World Cup",
+    "home": false,
+    "team": "Argentina",
+    "opponent": "Poland",
+    "teamScore": 2,
+    "opponentScore": 0,
+    "goals": 0,
+    "assists": 0,
+    "started": true,
+    "minutesPlayed": 90,
+    "pensScored": 0,
+    "pensMissed": 1,
+    "hatTricks": 0,
+    "freeKicks": 0,
+    "insideBox": 0,
+    "outsideBox": 0,
+    "left": 0,
+    "right": 0,
+    "head": 0,
+    "other": 0,
+    "successfulDribbles": 4,
+    "motm": false
+  }
+]
