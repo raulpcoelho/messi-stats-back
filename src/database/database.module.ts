@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmService } from './typeorm.service';
-import { MatchesRepository } from 'src/matches/matches.repository';
+import { MatchesRepository } from '../matches/matches.repository';
 import { TypeOrmMatchesRepository } from './repositories/typeorm.matches.repository';
 
 @Module({

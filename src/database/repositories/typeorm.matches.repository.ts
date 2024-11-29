@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { MatchesRepository } from 'src/matches/matches.repository';
+import { MatchesRepository } from '../../matches/matches.repository';
 import { TypeOrmService } from '../typeorm.service';
-import { FindMatchDto } from 'src/matches/dto/find-match.dto';
-import { Match } from 'src/matches/entities/match.entity';
+import { FindMatchDto } from '../../matches/dto/find-match.dto';
+import { Match } from '../../matches/entities/match.entity';
 import { SelectQueryBuilder } from 'typeorm';
 
 @Injectable()
