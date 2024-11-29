@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+import * as fs from 'fs';
 import { AppModule } from './../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -15,10 +16,25 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('/matches (GET)', async () => {
+    const expected = await fs.promises.readFile('test/data/expected/allMatches.json', 'utf-8');
+    const expectedJson = JSON.parse(expected);
+    await request(app.getHttpServer())
+      .get('/matches?year=2022&competition=World%20Cup')
       .expect(200)
-      .expect('Hello World!');
+      .expect(expectedJson);
+  });
+
+  it('/totals (GET)', async () => {
+    const expected = await fs.promises.readFile('test/data/expected/totals.json', 'utf-8');
+    const expectedJson = JSON.parse(expected);
+    await request(app.getHttpServer())
+      .get('/totals?year=2022&competition=World%20Cup')
+      .expect(200)
+      .expect(expectedJson);
   });
 });
