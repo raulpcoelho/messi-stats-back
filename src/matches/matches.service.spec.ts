@@ -29,7 +29,7 @@ describe('MatchesService', () => {
     expect(matches).toEqual(expectedJson);
   });
 
-  it('should return matches that satisfy the filters - first filter', async () => {
+  it('should return matches that satisfy the filter - first filter', async () => {
     const matches = await service.findAllFiltered({ pensScored: 1 });
 
     const expected = await fs.promises.readFile(
@@ -41,7 +41,7 @@ describe('MatchesService', () => {
     expect(matches).toEqual(expectedJson);
   });
 
-  it('should return matches that satisfy the filters - second filter', async () => {
+  it('should return matches that satisfy the filter - second filter', async () => {
     const matches = await service.findAllFiltered({ opponent: 'Poland', goals: 0 });
 
     const expected = await fs.promises.readFile(
@@ -53,7 +53,7 @@ describe('MatchesService', () => {
     expect(matches).toEqual(expectedJson);
   });
 
-  it('should return matches that satisfy the filters - third filter', async () => {
+  it('should return matches that satisfy the filter - third filter', async () => {
     const matches = await service.findAllFiltered({ year: 2022 });
 
     const expected = await fs.promises.readFile(
