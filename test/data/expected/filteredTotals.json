@@ -1,0 +1,23 @@
+{
+  "totalGoals": 5,
+  "totalAssists": 2,
+  "totalMatches": 4,
+  "totalMinutes": 420,
+  "homeMatches": 0,
+  "awayMatches": 4,
+  "matchesWon": 1,
+  "matchesLost": 1,
+  "matchesStarted": 4,
+  "totalPensScored": 4,
+  "totalPensMissed": 0,
+  "totalHatTricks": 0,
+  "totalFreeKicks": 0,
+  "totalInsideBox": 1,
+  "totalOutsideBox": 0,
+  "totalLeft": 4,
+  "totalRight": 1,
+  "totalHeaded": 0,
+  "totalOtherBodyPart": 0,
+  "totalSuccessfulDribbles": 8,
+  "totalMotm": 0
+}

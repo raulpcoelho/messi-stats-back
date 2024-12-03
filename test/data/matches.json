@@ -1,0 +1,275 @@
+[
+  {
+    "id": 1,
+    "matchDate": "2022-12-18",
+    "teamScore": 3,
+    "opponentScore": 3,
+    "home": false,
+    "goals": 2,
+    "assists": 0,
+    "started": true,
+    "minutesPlayed": 120,
+    "pensScored": 1,
+    "pensMissed": 0,
+    "hatTricks": 0,
+    "freeKicks": 0,
+    "insideBox": 1,
+    "outsideBox": 0,
+    "left": 1,
+    "right": 1,
+    "head": 0,
+    "other": 0,
+    "successfulDribbles": 0,
+    "motm": false,
+    "season": {
+      "id": 1,
+      "name": "2022-2023"
+    },
+    "competition": {
+      "id": 1,
+      "name": "World Cup"
+    },
+    "team": {
+      "id": 1,
+      "name": "Argentina"
+    },
+    "opponent": {
+      "id": 8,
+      "name": "France"
+    }
+  },
+  {
+    "id": 2,
+    "matchDate": "2022-12-13",
+    "teamScore": 3,
+    "opponentScore": 0,
+    "home": false,
+    "goals": 1,
+    "assists": 1,
+    "started": true,
+    "minutesPlayed": 90,
+    "pensScored": 1,
+    "pensMissed": 0,
+    "hatTricks": 0,
+    "freeKicks": 0,
+    "insideBox": 0,
+    "outsideBox": 0,
+    "left": 1,
+    "right": 0,
+    "head": 0,
+    "other": 0,
+    "successfulDribbles": 4,
+    "motm": false,
+    "season": {
+      "id": 1,
+      "name": "2022-2023"
+    },
+    "competition": {
+      "id": 1,
+      "name": "World Cup"
+    },
+    "team": {
+      "id": 1,
+      "name": "Argentina"
+    },
+    "opponent": {
+      "id": 7,
+      "name": "Croatia"
+    }
+  },
+  {
+    "id": 3,
+    "matchDate": "2022-12-09",
+    "teamScore": 2,
+    "opponentScore": 2,
+    "home": false,
+    "goals": 1,
+    "assists": 1,
+    "started": true,
+    "minutesPlayed": 120,
+    "pensScored": 1,
+    "pensMissed": 0,
+    "hatTricks": 0,
+    "freeKicks": 0,
+    "insideBox": 0,
+    "outsideBox": 0,
+    "left": 1,
+    "right": 0,
+    "head": 0,
+    "other": 0,
+    "successfulDribbles": 2,
+    "motm": false,
+    "season": {
+      "id": 1,
+      "name": "2022-2023"
+    },
+    "competition": {
+      "id": 1,
+      "name": "World Cup"
+    },
+    "team": {
+      "id": 1,
+      "name": "Argentina"
+    },
+    "opponent": {
+      "id": 2,
+      "name": "Netherlands"
+    }
+  },
+  {
+    "id": 4,
+    "matchDate": "2022-12-03",
+    "teamScore": 2,
+    "opponentScore": 1,
+    "home": false,
+    "goals": 1,
+    "assists": 0,
+    "started": true,
+    "minutesPlayed": 90,
+    "pensScored": 0,
+    "pensMissed": 0,
+    "hatTricks": 0,
+    "freeKicks": 0,
+    "insideBox": 1,
+    "outsideBox": 0,
+    "left": 1,
+    "right": 0,
+    "head": 0,
+    "other": 0,
+    "successfulDribbles": 1,
+    "motm": true,
+    "season": {
+      "id": 1,
+      "name": "2022-2023"
+    },
+    "competition": {
+      "id": 1,
+      "name": "World Cup"
+    },
+    "team": {
+      "id": 1,
+      "name": "Argentina"
+    },
+    "opponent": {
+      "id": 3,
+      "name": "Australia"
+    }
+  },
+  {
+    "id": 5,
+    "matchDate": "2022-11-30",
+    "teamScore": 2,
+    "opponentScore": 0,
+    "home": false,
+    "goals": 0,
+    "assists": 0,
+    "started": true,
+    "minutesPlayed": 90,
+    "pensScored": 0,
+    "pensMissed": 1,
+    "hatTricks": 0,
+    "freeKicks": 0,
+    "insideBox": 0,
+    "outsideBox": 0,
+    "left": 0,
+    "right": 0,
+    "head": 0,
+    "other": 0,
+    "successfulDribbles": 4,
+    "motm": false,
+    "season": {
+      "id": 1,
+      "name": "2022-2023"
+    },
+    "competition": {
+      "id": 1,
+      "name": "World Cup"
+    },
+    "team": {
+      "id": 1,
+      "name": "Argentina"
+    },
+    "opponent": {
+      "id": 4,
+      "name": "Poland"
+    }
+  },
+  {
+    "id": 6,
+    "matchDate": "2022-11-26",
+    "teamScore": 2,
+    "opponentScore": 0,
+    "home": false,
+    "goals": 1,
+    "assists": 1,
+    "started": true,
+    "minutesPlayed": 90,
+    "pensScored": 0,
+    "pensMissed": 0,
+    "hatTricks": 0,
+    "freeKicks": 0,
+    "insideBox": 0,
+    "outsideBox": 1,
+    "left": 1,
+    "right": 0,
+    "head": 0,
+    "other": 0,
+    "successfulDribbles": 2,
+    "motm": true,
+    "season": {
+      "id": 1,
+      "name": "2022-2023"
+    },
+    "competition": {
+      "id": 1,
+      "name": "World Cup"
+    },
+    "team": {
+      "id": 1,
+      "name": "Argentina"
+    },
+    "opponent": {
+      "id": 5,
+      "name": "Mexico"
+    }
+  },
+  {
+    "id": 7,
+    "matchDate": "2022-11-22",
+    "teamScore": 1,
+    "opponentScore": 2,
+    "home": false,
+    "goals": 1,
+    "assists": 0,
+    "started": true,
+    "minutesPlayed": 90,
+    "pensScored": 1,
+    "pensMissed": 0,
+    "hatTricks": 0,
+    "freeKicks": 0,
+    "insideBox": 0,
+    "outsideBox": 0,
+    "left": 1,
+    "right": 0,
+    "head": 0,
+    "other": 0,
+    "successfulDribbles": 2,
+    "motm": false,
+    "season": {
+      "id": 1,
+      "name": "2022-2023"
+    },
+    "competition": {
+      "id": 1,
+      "name": "World Cup"
+    },
+    "team": {
+      "id": 1,
+      "name": "Argentina"
+    },
+    "opponent": {
+      "id": 6,
+      "name": "Saudi Arabia"
+    }
+  }
+]

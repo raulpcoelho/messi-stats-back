@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { FindMatchDto } from 'src/matches/dto/find-match.dto';
-import { MatchesRepository } from 'src/matches/matches.repository';
+import { FindMatchDto } from '../matches/dto/find-match.dto';
+import { MatchesRepository } from '../matches/matches.repository';
 import { TotalsDto } from './dtos/totals.dto';
 
 @Injectable()

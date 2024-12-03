@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { MatchesRepository } from 'src/matches/matches.repository';
+import { MatchesRepository } from '../../matches/matches.repository';
 import { TypeOrmService } from '../typeorm.service';
-import { FindMatchDto } from 'src/matches/dto/find-match.dto';
-import { Match } from 'src/matches/entities/match.entity';
+import { FindMatchDto } from '../../matches/dto/find-match.dto';
+import { Match } from '../../matches/entities/match.entity';
 import { SelectQueryBuilder } from 'typeorm';
 
 @Injectable()
@@ -17,7 +17,8 @@ export class TypeOrmMatchesRepository implements MatchesRepository {
       .innerJoinAndSelect('m.season', 'season')
       .innerJoinAndSelect('m.competition', 'competition')
       .innerJoinAndSelect('m.team', 'team')
-      .innerJoinAndSelect('m.opponent', 'opponent');
+      .innerJoinAndSelect('m.opponent', 'opponent')
+      .orderBy('m.matchDate', 'DESC');
 
     if (findMatchDto) {
       Object.keys(findMatchDto).forEach(key => {

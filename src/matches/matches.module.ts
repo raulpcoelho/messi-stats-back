@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MatchesService } from './matches.service';
 import { MatchesController } from './matches.controller';
-import { TypeOrmService } from 'src/database/typeorm.service';
-import { DatabaseModule } from 'src/database/database.module';
+import { TypeOrmService } from '../database/typeorm.service';
+import { DatabaseModule } from '../database/database.module';
 
 @Module({
   imports: [DatabaseModule],
