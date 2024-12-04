@@ -23,11 +23,14 @@ export class TypeOrmService extends DataSource implements OnModuleInit {
       password: process.env.TYPEORM_PASSWORD,
       database: process.env.TYPEORM_DATABASE,
       ssl: process.env.ENVIRONMENT === 'production' ? true : false,
-      extra: {
-        ssl: {
-          rejectUnauthorized: false,
-        },
-      },
+      extra:
+        process.env.ENVIRONMENT === 'production'
+          ? {
+              ssl: {
+                rejectUnauthorized: false,
+              },
+            }
+          : {},
       entities: [Competition, Match, Season, Team],
       migrations: [
         CreateTables1732337440742,
