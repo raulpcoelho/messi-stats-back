@@ -18,11 +18,12 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Messi Stats API')
     .setDescription('Stats for all Messi games')
-    .setVersion('0.1')
+    .setVersion('1.0.0')
+    .setContact('Raul Coelho', null, 'rpc3@cin.ufpe.br')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/', app, document);
+  SwaggerModule.setup('/', app, document, { customSiteTitle: 'Lionel Messi Stats' });
 
   app.enableCors({
     origin: '*',
