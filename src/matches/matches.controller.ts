@@ -1,13 +1,14 @@
-import { Controller, Get, HttpStatus, Query, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Query, Req, Res, Logger } from '@nestjs/common';
 import { MatchesService } from './matches.service';
 import { FindMatchDto } from './dto/find-match.dto';
 import { MatchDto } from './dto/match.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Matches')
 @Controller('matches')
 export class MatchesController {
+  private readonly logger = new Logger(MatchesController.name);
   constructor(private readonly matchesService: MatchesService) {}
 
   @Get()
@@ -50,11 +51,18 @@ export class MatchesController {
     status: 500,
     description: 'An error occurred while trying to fetch matches',
   })
-  async findAllFiltered(@Res() res: Response, @Query() findMatchDto: FindMatchDto): Promise<Response<MatchDto[]>> {
+  async findAllFiltered(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query() findMatchDto: FindMatchDto,
+  ): Promise<Response<MatchDto[]>> {
     try {
+      const requesterInfo = { ip: req.ip, userAgent: req.headers['user-agent'] };
+      this.logger.log(`Request made by: ${JSON.stringify(requesterInfo)}`);
       const matches: MatchDto[] = await this.matchesService.findAllFiltered(findMatchDto);
       return res.status(HttpStatus.OK).json(matches);
     } catch (error) {
+      this.logger.error('An error occurred while trying to fetch matches', error.stack);
       return res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json({ error: 'An error occurred while trying to fetch matches' });
