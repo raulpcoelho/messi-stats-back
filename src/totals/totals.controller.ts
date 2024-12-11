@@ -51,7 +51,6 @@ export class TotalsController {
   ): Promise<Response<TotalsDto>> {
     try {
       const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-      console.log(req.headers['x-forwarded-for']);
       const requesterInfo = { ip, userAgent: req.headers['user-agent'] };
       this.logger.log(`Request made by ${requesterInfo.ip} using ${requesterInfo.userAgent}`);
 
