@@ -58,12 +58,15 @@ export class MatchesController {
     @Query() findMatchDto: FindMatchDto,
   ): Promise<Response<MatchDto[]>> {
     try {
-      const requesterInfo = { ip: req.ip, userAgent: req.headers['user-agent'] };
+      const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+      const requesterInfo = { ip, userAgent: req.headers['user-agent'] };
       this.logger.log(`Request made by ${requesterInfo.ip} using ${requesterInfo.userAgent}`);
+
       const matches: MatchDto[] = await this.matchesService.findAllFiltered(findMatchDto);
       return res.status(HttpStatus.OK).json(matches);
     } catch (error) {
       this.logger.error(`An error occurred while trying to fetch totals: ${error.message}`);
+
       return res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json({ error: 'An error occurred while trying to fetch matches' });
