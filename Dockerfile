@@ -12,7 +12,7 @@
 # https://www.bretfisher.com/node-docker-good-defaults/
 # http://goldbergyoni.com/checklist-best-practice-of-node-js-in-production/
 
-FROM node:20-alpine as builder
+FROM node:20-alpine AS builder
 
 ENV NODE_ENV build
 
