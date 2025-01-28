@@ -2,6 +2,10 @@
 
 This API provides detailed statistics for all matches played by Lionel Messi. You can filter the data by year, opponents, season, competition, and more to get specific insights. The data is updated regularly as Messi plays new matches.
 
+## API URL
+
+The API is accessible at: [https://www.messistats.info](https://www.messistats.info)
+
 ## Endpoints
 
 ### Matches (`/matches`)
@@ -71,7 +75,7 @@ GET /matches?year=2010&opponent=Real%20Madrid
 ]
 ```
 
-### Totals (/totals)
+### Totals (`/totals`)
 
 Retrieve total statistics. Can also be filtered by various parameters.
 
