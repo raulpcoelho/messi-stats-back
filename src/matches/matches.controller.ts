@@ -4,6 +4,7 @@ import { FindMatchDto } from './dto/find-match.dto';
 import { MatchDto } from './dto/match.dto';
 import { Request, Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FIND_ALL_MATCHES } from 'src/constants/examples';
 
 @ApiTags('Matches')
 @Controller('matches')
@@ -18,34 +19,7 @@ export class MatchesController {
     status: 200,
     description: 'Returns all matches that satisfy the query parameters',
     type: MatchDto,
-    example: [
-      {
-        matchDate: '2022-12-18',
-        season: '2022-2023',
-        competition: 'World Cup',
-        home: false,
-        team: 'Argentina',
-        opponent: 'France',
-        teamScore: 3,
-        opponentScore: 3,
-        goals: 2,
-        assists: 0,
-        started: true,
-        minutesPlayed: 120,
-        pensScored: 1,
-        pensMissed: 0,
-        hatTricks: 0,
-        freeKicks: 0,
-        insideBox: 1,
-        outsideBox: 0,
-        left: 1,
-        right: 1,
-        head: 0,
-        other: 0,
-        successfulDribbles: 0,
-        motm: false,
-      },
-    ],
+    example: FIND_ALL_MATCHES,
     isArray: true,
   })
   @ApiResponse({
