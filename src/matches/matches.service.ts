@@ -3,6 +3,7 @@ import { MatchesRepository } from './matches.repository';
 import { FindMatchDto } from './dto/find-match.dto';
 import { MatchDto } from './dto/match.dto';
 import { Match } from './entities/match.entity';
+import { FindMatchBetweenYearsDto } from './dto/find-match-between-years.dto';
 
 @Injectable()
 export class MatchesService {
@@ -10,6 +11,12 @@ export class MatchesService {
 
   async findAllFiltered(findMatchDto: FindMatchDto): Promise<MatchDto[]> {
     const matches = await this.matchesRepository.findAllFiltered(findMatchDto);
+    const matchDtos: MatchDto[] = matches.map(match => MatchesService.mapMatchToMatchDto(match));
+    return matchDtos;
+  }
+
+  async findAllBetweenYears(findMatchBetweenYearsDto: FindMatchBetweenYearsDto): Promise<MatchDto[]> {
+    const matches = await this.matchesRepository.findAllBetweenYears(findMatchBetweenYearsDto);
     const matchDtos: MatchDto[] = matches.map(match => MatchesService.mapMatchToMatchDto(match));
     return matchDtos;
   }
