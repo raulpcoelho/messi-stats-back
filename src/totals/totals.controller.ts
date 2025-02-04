@@ -5,12 +5,14 @@ import { TotalsDto } from './dtos/totals.dto';
 import { Request, Response } from 'express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { FIND_ALL_TOTALS } from 'src/constants/examples';
+import { FindMatchBetweenYearsDto } from 'src/matches/dto/find-match-between-years.dto';
 
 @Controller('totals')
 export class TotalsController {
   private readonly logger = new Logger(TotalsController.name);
 
   constructor(private readonly totalsService: TotalsService) {}
+
   @Get()
   @ApiOperation({ summary: 'Get the total stats of the matches that satisfy the filters' })
   @ApiResponse({
@@ -34,6 +36,39 @@ export class TotalsController {
       this.logger.log(`Request made by ${requesterInfo.ip} using ${requesterInfo.userAgent}`);
 
       const totals: TotalsDto = await this.totalsService.findAllFiltered(findMatchDto);
+      return res.status(HttpStatus.OK).json(totals);
+    } catch (error) {
+      this.logger.error(`An error occurred while trying to fetch totals: ${error.message}`);
+
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ error: 'An error occurred while trying to fetch totals' });
+    }
+  }
+
+  @Get('years')
+  @ApiOperation({ summary: 'Get the total stats of the matches between given years' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the total stats of the matches between the given years',
+    type: TotalsDto,
+    example: FIND_ALL_TOTALS,
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'An error occurred while trying to fetch totals',
+  })
+  async findAllBetweenYears(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query() findMatchBetweenYearsDto: FindMatchBetweenYearsDto,
+  ): Promise<Response<TotalsDto>> {
+    try {
+      const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+      const requesterInfo = { ip, userAgent: req.headers['user-agent'] };
+      this.logger.log(`Request made by ${requesterInfo.ip} using ${requesterInfo.userAgent}`);
+
+      const totals: TotalsDto = await this.totalsService.findAllBetweenYears(findMatchBetweenYearsDto);
       return res.status(HttpStatus.OK).json(totals);
     } catch (error) {
       this.logger.error(`An error occurred while trying to fetch totals: ${error.message}`);

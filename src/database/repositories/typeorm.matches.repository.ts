@@ -4,6 +4,7 @@ import { TypeOrmService } from '../typeorm.service';
 import { FindMatchDto } from '../../matches/dto/find-match.dto';
 import { Match } from '../../matches/entities/match.entity';
 import { SelectQueryBuilder } from 'typeorm';
+import { FindMatchBetweenYearsDto } from 'src/matches/dto/find-match-between-years.dto';
 
 @Injectable()
 export class TypeOrmMatchesRepository implements MatchesRepository {
@@ -48,5 +49,21 @@ export class TypeOrmMatchesRepository implements MatchesRepository {
     }
     query = `m.${key} = :${key}`;
     queryBuilder.andWhere(query, { [key]: value });
+  }
+
+  async findAllBetweenYears(findMatchBetweenYearsDto: FindMatchBetweenYearsDto): Promise<Match[]> {
+    const { startYear, endYear } = findMatchBetweenYearsDto;
+
+    const queryBuilder = this.typeOrmService
+      .createQueryBuilder()
+      .select('m')
+      .from(Match, 'm')
+      .innerJoinAndSelect('m.season', 'season')
+      .innerJoinAndSelect('m.competition', 'competition')
+      .innerJoinAndSelect('m.team', 'team')
+      .innerJoinAndSelect('m.opponent', 'opponent')
+      .where('EXTRACT(YEAR FROM m.matchDate) BETWEEN :startYear AND :endYear', { startYear, endYear })
+      .orderBy('m.matchDate', 'DESC');
+    return queryBuilder.getMany();
   }
 }

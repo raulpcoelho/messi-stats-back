@@ -2,13 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { FindMatchDto } from '../matches/dto/find-match.dto';
 import { MatchesRepository } from '../matches/matches.repository';
 import { TotalsDto } from './dtos/totals.dto';
+import { FindMatchBetweenYearsDto } from 'src/matches/dto/find-match-between-years.dto';
+import { Match } from 'src/matches/entities/match.entity';
 
 @Injectable()
 export class TotalsService {
   constructor(private readonly matchesRepository: MatchesRepository) {}
   async findAllFiltered(findMatchDto: FindMatchDto): Promise<TotalsDto> {
-    const matches = await this.matchesRepository.findAllFiltered(findMatchDto);
+    const matches: Match[] = await this.matchesRepository.findAllFiltered(findMatchDto);
+    return TotalsService.reduceStats(matches);
+  }
 
+  async findAllBetweenYears(findMatchBetweenYearsDto: FindMatchBetweenYearsDto): Promise<TotalsDto> {
+    const matches: Match[] = await this.matchesRepository.findAllBetweenYears(findMatchBetweenYearsDto);
+    return TotalsService.reduceStats(matches);
+  }
+
+  static reduceStats(matches: Match[]): TotalsDto {
     const totalsDto = matches.reduce((acc, match) => {
       acc.totalGoals += match.goals;
       acc.totalAssists += match.assists;
