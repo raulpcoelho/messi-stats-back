@@ -4,6 +4,7 @@ import { FindMatchDto } from '../matches/dto/find-match.dto';
 import { TotalsDto } from './dtos/totals.dto';
 import { Request, Response } from 'express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { FIND_ALL_TOTALS } from 'src/constants/examples';
 
 @Controller('totals')
 export class TotalsController {
@@ -16,29 +17,7 @@ export class TotalsController {
     status: 200,
     description: 'Returns the total stats of the matches that satisfy the query parameters',
     type: TotalsDto,
-    example: {
-      totalGoals: 7,
-      totalAssists: 3,
-      totalMatches: 7,
-      totalMinutes: 690,
-      homeMatches: 0,
-      awayMatches: 7,
-      matchesWon: 4,
-      matchesLost: 1,
-      matchesStarted: 7,
-      totalPensScored: 4,
-      totalPensMissed: 1,
-      totalHatTricks: 0,
-      totalFreeKicks: 0,
-      totalInsideBox: 2,
-      totalOutsideBox: 1,
-      totalLeft: 6,
-      totalRight: 1,
-      totalHeaded: 0,
-      totalOtherBodyPart: 0,
-      totalSuccessfulDribbles: 15,
-      totalMotm: 2,
-    },
+    example: FIND_ALL_TOTALS,
   })
   @ApiResponse({
     status: 500,
