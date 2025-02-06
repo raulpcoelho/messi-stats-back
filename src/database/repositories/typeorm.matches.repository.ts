@@ -31,7 +31,7 @@ export class TypeOrmMatchesRepository implements MatchesRepository {
     return queryBuilder.getMany();
   }
 
-  static applyFilter(queryBuilder: SelectQueryBuilder<Match>, key: string, value: any): void {
+  private static applyFilter(queryBuilder: SelectQueryBuilder<Match>, key: string, value: any): void {
     if (value === undefined && value === null) {
       return;
     }

@@ -18,7 +18,7 @@ export class TotalsService {
     return TotalsService.reduceStats(matches);
   }
 
-  static reduceStats(matches: Match[]): TotalsDto {
+  private static reduceStats(matches: Match[]): TotalsDto {
     const totalsDto = matches.reduce((acc, match) => {
       acc.totalGoals += match.goals;
       acc.totalAssists += match.assists;
