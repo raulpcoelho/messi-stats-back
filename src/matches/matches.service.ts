@@ -21,7 +21,7 @@ export class MatchesService {
     return matchDtos;
   }
 
-  static mapMatchToMatchDto(match: Match): MatchDto {
+  private static mapMatchToMatchDto(match: Match): MatchDto {
     const matchDto = new MatchDto();
     matchDto.matchDate = match.matchDate;
     matchDto.season = match.season.name;
