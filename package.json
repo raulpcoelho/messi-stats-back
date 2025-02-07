@@ -46,7 +46,7 @@
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "^0.7.2",
+    "@flydotio/dockerfile": "^0.7.4",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
