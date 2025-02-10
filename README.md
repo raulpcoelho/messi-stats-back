@@ -120,6 +120,7 @@ GET /totals?year=2022&competition=World%20Cup
 - Messi's total stats in the Champions League: https://www.messistats.info/totals?competition=Champions%20League
 - If you remember a game by a specific date: https://www.messistats.info/matches?matchDate=2011-05-28
 - Messi's stats on matches he didn't start: https://www.messistats.info/totals?started=false
+- Messi's stats from 2009 to 2019: https://www.messistats.info/totals/years?startYear=2009&endYear=2019
 
 ## License
 
