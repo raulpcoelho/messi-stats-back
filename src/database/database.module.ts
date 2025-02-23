@@ -5,6 +5,6 @@ import { TypeOrmMatchesRepository } from './repositories/typeorm.matches.reposit
 
 @Module({
   providers: [TypeOrmService, { provide: MatchesRepository, useClass: TypeOrmMatchesRepository }],
-  exports: [MatchesRepository],
+  exports: [MatchesRepository, TypeOrmService],
 })
 export class DatabaseModule {}

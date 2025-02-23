@@ -31,7 +31,7 @@ export class Teams1732339964861 implements MigrationInterface {
 	  (23,'Montreal'),
 	  (24,'New York Red Bulls'),
 	  (25,'Nashville SC'),
-	  (26,'Kansas City'),
+	  (26,'Sporting Kansas City'),
 	  (27,'Monterrey'),
 	  (28,'Colorado Rapids'),
 	  (29,'Orlando City'),
