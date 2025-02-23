@@ -3,7 +3,7 @@ import { MatchesRepository } from '../../matches/matches.repository';
 import { TypeOrmService } from '../typeorm.service';
 import { FindMatchDto } from '../../matches/dto/find-match.dto';
 import { Match } from '../../matches/entities/match.entity';
-import { SelectQueryBuilder } from 'typeorm';
+import { QueryRunner, SelectQueryBuilder } from 'typeorm';
 import { FindMatchBetweenYearsDto } from 'src/matches/dto/find-match-between-years.dto';
 import { MatchDto } from 'src/matches/dto/match.dto';
 import { Competition } from 'src/competitions/entities/competition.entity';
@@ -71,49 +71,49 @@ export class TypeOrmMatchesRepository implements MatchesRepository {
     return queryBuilder.getMany();
   }
 
-  async create(matchDto: MatchDto): Promise<Match> {
-    const match = await this.typeOrmService.manager.findOneBy(Match, { matchDate: matchDto.matchDate });
+  async create(matchDto: MatchDto, queryRunner: QueryRunner): Promise<Match> {
+    const match = await queryRunner.manager.findOneBy(Match, { matchDate: matchDto.matchDate });
     if (match) {
       return match;
     }
-    let competition = await this.typeOrmService.manager.findOneBy(Competition, { name: matchDto.competition });
+    let competition = await queryRunner.manager.findOneBy(Competition, { name: matchDto.competition });
     if (!competition) {
       const newCompetition: Partial<Competition> = {
         name: matchDto.competition,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      competition = await this.typeOrmService.manager.save(Competition, newCompetition);
+      competition = await queryRunner.manager.save(Competition, newCompetition);
     }
 
-    let season = await this.typeOrmService.manager.findOneBy(Season, { name: matchDto.season });
+    let season = await queryRunner.manager.findOneBy(Season, { name: matchDto.season });
     if (!season) {
       const newSeason: Partial<Season> = {
         name: matchDto.season,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      season = await this.typeOrmService.manager.save(Season, newSeason);
+      season = await queryRunner.manager.save(Season, newSeason);
     }
 
-    let team = await this.typeOrmService.manager.findOneBy(Team, { name: matchDto.team });
+    let team = await queryRunner.manager.findOneBy(Team, { name: matchDto.team });
     if (!team) {
       const newTeam: Partial<Team> = {
         name: matchDto.team,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      team = await this.typeOrmService.manager.save(Team, newTeam);
+      team = await queryRunner.manager.save(Team, newTeam);
     }
 
-    let opponent = await this.typeOrmService.manager.findOneBy(Team, { name: matchDto.opponent });
+    let opponent = await queryRunner.manager.findOneBy(Team, { name: matchDto.opponent });
     if (!opponent) {
       const newOpponent: Partial<Team> = {
         name: matchDto.opponent,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      opponent = await this.typeOrmService.manager.save(Team, newOpponent);
+      opponent = await queryRunner.manager.save(Team, newOpponent);
     }
 
     const newMatch: Partial<Match> = {
@@ -126,6 +126,6 @@ export class TypeOrmMatchesRepository implements MatchesRepository {
       updatedAt: new Date(),
     };
 
-    return await this.typeOrmService.manager.save(Match, newMatch);
+    return await queryRunner.manager.save(Match, newMatch);
   }
 }
