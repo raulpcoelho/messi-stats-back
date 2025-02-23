@@ -72,6 +72,10 @@ export class TypeOrmMatchesRepository implements MatchesRepository {
   }
 
   async create(matchDto: MatchDto): Promise<Match> {
+    const match = await this.typeOrmService.manager.findOneBy(Match, { matchDate: matchDto.matchDate });
+    if (match) {
+      return match;
+    }
     let competition = await this.typeOrmService.manager.findOneBy(Competition, { name: matchDto.competition });
     if (!competition) {
       const newCompetition: Partial<Competition> = {

@@ -40,7 +40,6 @@ export class AddMatchesCommand extends CommandRunner {
         'motm',
       ];
       const propertiesMap = {
-        matchDate: 'date',
         home: 'homeAway',
         teamScore: 'scoreTeam',
         opponentScore: 'scoreOpponent',
@@ -53,12 +52,22 @@ export class AddMatchesCommand extends CommandRunner {
         for (const key in propertiesMap) {
           matchDto[key] = matchJson.node[propertiesMap[key]];
         }
+        matchDto.matchDate = AddMatchesCommand.parseDate(matchJson.node.date, matchJson.node.year);
+        matchDto.home = matchJson.node.homeAway === 'H';
+        matchDto.motm = matchJson.node.motm === '1';
+        matchDto.started = matchJson.node.started === '1';
         console.log(matchDto);
-        //treat data!
+
+        await this.matchesRepository.create(matchDto);
       }
     } catch (error) {
       console.error('Error reading the JSON file:', error.message);
     }
+  }
+
+  private static parseDate(dayMonth, year) {
+    const [day, month] = dayMonth.split('-');
+    return new Date(year, month - 1, day);
   }
 
   @Option({
