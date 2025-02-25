@@ -49,25 +49,17 @@ export class AddMatchesCommand extends CommandRunner {
         pensScored: 'pens',
       };
 
-      const matchDto: MatchDto = new MatchDto();
+      const allProperties = { stringProperties, intProperties, propertiesMap };
+
       for (const matchJson of matchesData) {
-        const matchInfo = matchJson.node;
-        for (const property of stringProperties) {
-          matchDto[property] = matchInfo[property];
-        }
-        for (const property of intProperties) {
-          matchDto[property] = parseInt(matchInfo[property]);
-        }
-        for (const key in propertiesMap) {
-          matchDto[key] = parseInt(matchInfo[propertiesMap[key]]);
-        }
-        matchDto.matchDate = AddMatchesCommand.parseDate(matchInfo.date, matchInfo.year);
-        matchDto.home = matchInfo.homeAway === 'H';
-        matchDto.motm = matchInfo.motm === '1';
-        matchDto.started = matchInfo.started === '1';
+        const matchDto: MatchDto = AddMatchesCommand.fillDtoData(matchJson, allProperties);
 
         const match = await this.matchesRepository.create(matchDto, queryRunner);
-        console.log(match);
+        if (match.team) {
+          console.log(
+            `Match inserted: ${match.team.name} vs ${match.opponent.name} - ${match.matchDate.toLocaleDateString()}`,
+          );
+        }
       }
       await queryRunner.commitTransaction();
     } catch (error) {
@@ -78,9 +70,41 @@ export class AddMatchesCommand extends CommandRunner {
     }
   }
 
-  private static parseDate(dayMonth, year) {
+  private static parseDate(dayMonth, year): Date {
     const [day, month] = dayMonth.split('-');
     return new Date(year, month - 1, day);
+  }
+
+  private static processJsonData(matchInfo: any): any {
+    const keys = Object.keys(matchInfo);
+    for (const key of keys) {
+      if (matchInfo[key] === '' || matchInfo[key] === '-') {
+        matchInfo[key] = null;
+      }
+    }
+    return matchInfo;
+  }
+
+  private static fillDtoData(matchJson: any, allProperties: any): MatchDto {
+    const matchInfo = AddMatchesCommand.processJsonData(matchJson.node);
+    const matchDto = new MatchDto();
+    const { stringProperties, intProperties, propertiesMap } = allProperties;
+    for (const property of stringProperties) {
+      matchDto[property] = matchInfo[property];
+    }
+    for (const property of intProperties) {
+      const value = matchInfo[property];
+      matchDto[property] = value ? parseInt(value) : null;
+    }
+    for (const key in propertiesMap) {
+      const value = matchInfo[propertiesMap[key]];
+      matchDto[key] = value ? parseInt(value) : null;
+    }
+    matchDto.matchDate = AddMatchesCommand.parseDate(matchInfo.date, matchInfo.year);
+    matchDto.home = matchInfo.homeAway === 'H';
+    matchDto.motm = matchInfo.motm === '1';
+    matchDto.started = matchInfo.started === '1';
+    return matchDto;
   }
 
   @Option({
