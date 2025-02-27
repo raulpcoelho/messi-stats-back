@@ -129,3 +129,5 @@ This project is licensed under the Apache 2.0 License - see the [LICENSE](./LICE
 ## Contact
 
 For any inquiries, please contact Raul Coelho at rpc3@cin.ufpe.br.
+
+<a href="https://www.flaticon.com/br/icones-gratis/coroa" title="icon crown">Icon created by Good Ware - Flaticon</a>

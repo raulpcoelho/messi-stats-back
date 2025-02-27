@@ -27,7 +27,10 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/', app, document, { customSiteTitle: 'Lionel Messi Stats' });
+  SwaggerModule.setup('/', app, document, {
+    customSiteTitle: 'Lionel Messi Stats',
+    customfavIcon: '/static/favicon.png',
+  });
 
   app.enableCors({
     origin: '*',
