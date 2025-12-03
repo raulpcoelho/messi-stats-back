@@ -1,5 +1,5 @@
 const { NestFactory } = require('@nestjs/core');
-const { AppModule } = require('./dist/app.module');
+const { AppModule } = require('../dist/app.module');
 const { ValidationPipe } = require('@nestjs/common');
 const { DocumentBuilder, SwaggerModule } = require('@nestjs/swagger');
 
