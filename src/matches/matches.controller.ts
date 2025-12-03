@@ -4,7 +4,7 @@ import { FindMatchDto } from './dto/find-match.dto';
 import { MatchDto } from './dto/match.dto';
 import { Request, Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { FIND_ALL_MATCHES } from 'src/constants/examples';
+import { FIND_ALL_MATCHES } from '../constants/examples';
 import { FindMatchBetweenYearsDto } from './dto/find-match-between-years.dto';
 
 @ApiTags('Matches')

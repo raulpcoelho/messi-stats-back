@@ -4,11 +4,11 @@ import { TypeOrmService } from '../typeorm.service';
 import { FindMatchDto } from '../../matches/dto/find-match.dto';
 import { Match } from '../../matches/entities/match.entity';
 import { QueryRunner, SelectQueryBuilder } from 'typeorm';
-import { FindMatchBetweenYearsDto } from 'src/matches/dto/find-match-between-years.dto';
-import { MatchDto } from 'src/matches/dto/match.dto';
-import { Competition } from 'src/competitions/entities/competition.entity';
-import { Season } from 'src/seasons/entities/season.entity';
-import { Team } from 'src/teams/entities/team.entity';
+import { FindMatchBetweenYearsDto } from '../../matches/dto/find-match-between-years.dto';
+import { MatchDto } from '../../matches/dto/match.dto';
+import { Competition } from '../../competitions/entities/competition.entity';
+import { Season } from '../../seasons/entities/season.entity';
+import { Team } from '../../teams/entities/team.entity';
 
 @Injectable()
 export class TypeOrmMatchesRepository implements MatchesRepository {
