@@ -38,7 +38,7 @@
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.10",
     "@nestjs/mapped-types": "*",
-    "@nestjs/platform-express": "^11.0.10",
+    "@nestjs/platform-express": "^11.1.9",
     "@nestjs/serve-static": "^5.0.3",
     "@nestjs/swagger": "^11.0.5",
     "class-transformer": "^0.5.1",
