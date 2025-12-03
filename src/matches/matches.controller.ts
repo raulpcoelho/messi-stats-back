@@ -25,7 +25,7 @@ export class MatchesController {
   })
   @ApiResponse({
     status: 500,
-    description: 'An error occurred while trying to fetch matches',
+    description: 'An error occurred while trying to fetch matches.',
   })
   async findAllFiltered(
     @Req() req: Request,
