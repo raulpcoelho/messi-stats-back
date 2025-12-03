@@ -18,7 +18,6 @@ import { join } from 'path';
     TotalsModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
-      serveRoot: '/static',
     }),
   ],
   controllers: [],

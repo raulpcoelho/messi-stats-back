@@ -8,6 +8,7 @@ import { Match } from 'src/matches/entities/match.entity';
 @Injectable()
 export class TotalsService {
   constructor(private readonly matchesRepository: MatchesRepository) {}
+
   async findAllFiltered(findMatchDto: FindMatchDto): Promise<TotalsDto> {
     const matches: Match[] = await this.matchesRepository.findAllFiltered(findMatchDto);
     return TotalsService.reduceStats(matches);
