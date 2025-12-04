@@ -1,13 +1,123 @@
 const API_URL = '/matches';
+let allMatches = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchMatches();
+    fetchAllMatches(); // Fetch all data once for client-side aggregation
+    fetchMatches(); // Initial load for home
     setupFilters();
+    setupNavigation();
 });
+
+async function fetchAllMatches() {
+    try {
+        const response = await fetch(API_URL);
+        allMatches = await response.json();
+        populateLists();
+    } catch (error) {
+        console.error('Error fetching all matches:', error);
+    }
+}
+
+function setupNavigation() {
+    const links = document.querySelectorAll('.sidebar-nav a');
+    const views = ['home', 'teams', 'competitions', 'opponents'];
+
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const viewName = link.dataset.view;
+
+            // Update active link
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+
+            // Show selected view
+            views.forEach(view => {
+                const el = document.getElementById(`view-${view}`);
+                if (view === viewName) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+        });
+    });
+}
+
+function populateLists() {
+    // Teams
+    const teams = [...new Set(allMatches.map(m => m.team))].sort();
+    renderGridList('teams-grid', teams, 'team');
+
+    // Competitions
+    const competitions = [...new Set(allMatches.map(m => m.competition))].sort();
+    renderGridList('competitions-grid', competitions, 'competition');
+
+    // Opponents
+    const opponents = [...new Set(allMatches.map(m => m.opponent))].sort();
+    renderGridList('opponents-grid', opponents, 'opponent');
+}
+
+function renderGridList(elementId, items, type) {
+    const container = document.getElementById(elementId);
+    container.innerHTML = items.map(item => `
+        <div class="grid-item" onclick="showStats('${type}', '${item.replace(/'/g, "\\'")}')">
+            <h3>${item}</h3>
+            <p>Click for stats</p>
+        </div>
+    `).join('');
+}
+
+async function showStats(type, value) {
+    // Hide grid, show stats container
+    const viewId = type === 'team' ? 'teams' : type === 'competition' ? 'competitions' : 'opponents';
+    const statsContainer = document.getElementById(`${type === 'team' ? 'team' : type === 'competition' ? 'competition' : 'opponent'}-stats`);
+    
+    // Filter matches
+    const filteredMatches = allMatches.filter(m => m[type] === value);
+    
+    // Calculate stats
+    const totalMatches = filteredMatches.length;
+    const goals = filteredMatches.reduce((acc, m) => acc + m.goals, 0);
+    const assists = filteredMatches.reduce((acc, m) => acc + m.assists, 0);
+
+    statsContainer.innerHTML = `
+        <div class="section-header">
+            <h2>${value} Stats</h2>
+            <button class="btn btn-secondary" onclick="resetView('${viewId}')">Back to List</button>
+        </div>
+        <div class="stats-summary">
+            <div class="stat-card">
+                <div class="stat-label">Matches</div>
+                <div class="stat-value">${totalMatches}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Goals</div>
+                <div class="stat-value">${goals}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Assists</div>
+                <div class="stat-value">${assists}</div>
+            </div>
+        </div>
+        <div class="matches-grid">
+            ${renderMatchesHTML(filteredMatches)}
+        </div>
+    `;
+    
+    document.getElementById(`${viewId}-grid`).classList.add('hidden');
+    statsContainer.classList.remove('hidden');
+}
+
+window.resetView = function(viewId) {
+    document.getElementById(`${viewId}-grid`).classList.remove('hidden');
+    const statsContainer = document.getElementById(`${viewId === 'teams' ? 'team' : viewId === 'competitions' ? 'competition' : 'opponent'}-stats`);
+    statsContainer.classList.add('hidden');
+    statsContainer.innerHTML = '';
+};
 
 async function fetchMatches(year = '') {
     const grid = document.getElementById('matches-grid');
-    const summary = document.getElementById('stats-summary');
     
     // Show loading state if needed (initial load)
     if (!grid.children.length) {
@@ -60,7 +170,11 @@ function renderMatches(matches) {
         return;
     }
 
-    const matchesHTML = matches.map(match => {
+    grid.innerHTML = renderMatchesHTML(matches);
+}
+
+function renderMatchesHTML(matches) {
+    return matches.map(match => {
         const homeTeam = match.home ? match.team : match.opponent;
         const awayTeam = match.home ? match.opponent : match.team;
         const homeScore = match.home ? match.teamScore : match.opponentScore;
@@ -88,8 +202,6 @@ function renderMatches(matches) {
             </div>
         </div>
     `}).join('');
-
-    grid.innerHTML = matchesHTML;
 }
 
 function populateYears(matches) {

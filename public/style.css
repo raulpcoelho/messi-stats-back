@@ -9,6 +9,7 @@
     --danger: #f87171;
     --card-bg: rgba(30, 41, 59, 0.7);
     --card-border: rgba(255, 255, 255, 0.1);
+    --sidebar-width: 280px;
     --font-main: 'Outfit', sans-serif;
 }
 
@@ -42,19 +43,85 @@ body {
     filter: grayscale(50%) contrast(120%);
 }
 
-.app-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+.app-layout {
+    display: flex;
+    min-height: 100vh;
     position: relative;
     z-index: 1;
 }
 
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background: rgba(15, 23, 42, 0.95);
+    border-right: 1px solid var(--card-border);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+.sidebar-header {
+    margin-bottom: 3rem;
+}
+
+.sidebar-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+}
+
+.sidebar-nav li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.sidebar-nav a:hover, .sidebar-nav a.active {
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--accent);
+}
+
+.sidebar-nav .icon {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid var(--card-border);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: 2rem 3rem;
+    max-width: calc(100% - var(--sidebar-width));
+}
+
 /* Header */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 3rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--card-border);
@@ -85,6 +152,14 @@ h1 {
     font-weight: 500;
     transition: all 0.3s ease;
     font-size: 0.9rem;
+    display: inline-block;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    width: 100%;
+    text-align: center;
 }
 
 .btn-secondary {
@@ -245,11 +320,29 @@ h1 {
     font-weight: 600;
 }
 
+/* Custom Select */
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: '▼';
+    font-size: 0.8rem;
+    color: var(--accent);
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
 select {
+    appearance: none;
+    -webkit-appearance: none;
     background: rgba(30, 41, 59, 0.8);
     color: var(--text);
     border: 1px solid var(--card-border);
-    padding: 0.8rem 1.5rem;
+    padding: 0.8rem 3rem 0.8rem 1.5rem;
     border-radius: 12px;
     font-family: var(--font-main);
     font-size: 0.95rem;
@@ -257,11 +350,13 @@ select {
     outline: none;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    min-width: 150px;
 }
 
 select:hover, select:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+    background: rgba(30, 41, 59, 0.95);
 }
 
 .matches-grid {
@@ -382,8 +477,98 @@ footer {
     font-size: 0.9rem;
 }
 
+/* Grid Lists for Teams/Competitions/Opponents */
+.grid-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.grid-item {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.grid-item:hover {
+    background: rgba(56, 189, 248, 0.1);
+    border-color: var(--accent);
+    transform: translateY(-3px);
+}
+
+.grid-item h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.grid-item p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
 /* Responsive */
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 240px;
+    }
+    .main-content {
+        padding: 2rem;
+    }
+}
+
 @media (max-width: 768px) {
+    .app-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1rem;
+        border-right: none;
+        border-bottom: 1px solid var(--card-border);
+    }
+
+    .sidebar-header {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .sidebar-nav ul {
+        display: flex;
+        overflow-x: auto;
+        gap: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .sidebar-nav li {
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 1.5rem;
+    }
+
     .hero-content {
         flex-direction: column-reverse;
         text-align: center;
@@ -397,10 +582,6 @@ footer {
 
     .hero-text h2 {
         font-size: 2.5rem;
-    }
-
-    .app-container {
-        padding: 1rem;
     }
     
     h1 {
