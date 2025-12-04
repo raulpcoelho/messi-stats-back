@@ -4,8 +4,8 @@ import { FindMatchDto } from '../matches/dto/find-match.dto';
 import { TotalsDto } from './dtos/totals.dto';
 import { Request, Response } from 'express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { FIND_ALL_TOTALS } from 'src/constants/examples';
-import { FindMatchBetweenYearsDto } from 'src/matches/dto/find-match-between-years.dto';
+import { FIND_ALL_TOTALS } from '../constants/examples';
+import { FindMatchBetweenYearsDto } from '../matches/dto/find-match-between-years.dto';
 
 @Controller('totals')
 export class TotalsController {

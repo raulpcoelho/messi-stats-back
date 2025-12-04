@@ -3,7 +3,7 @@ import { TotalsController } from './totals.controller';
 import { TotalsService } from './totals.service';
 import { MatchesRepository } from '../matches/matches.repository';
 import { TotalsDto } from './dtos/totals.dto';
-import { FindMatchDto } from 'src/matches/dto/find-match.dto';
+import { FindMatchDto } from '../matches/dto/find-match.dto';
 import { Response } from 'express';
 import { HttpStatus } from '@nestjs/common';
 
