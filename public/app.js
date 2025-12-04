@@ -1,18 +1,24 @@
 const API_URL = '/matches';
 let allMatches = [];
+let currentPage = 1;
+let isLoading = false;
+let hasMore = true;
+let currentYearFilter = '';
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchAllMatches(); // Fetch all data once for client-side aggregation
     fetchMatches(); // Initial load for home
     setupFilters();
     setupNavigation();
+    setupInfiniteScroll();
 });
 
 async function fetchAllMatches() {
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(`${API_URL}?limit=10000`); // Fetch all for stats
         allMatches = await response.json();
         populateLists();
+        renderStats(allMatches); // Initial stats based on all matches
     } catch (error) {
         console.error('Error fetching all matches:', error);
     }
@@ -56,6 +62,9 @@ function populateLists() {
     // Opponents
     const opponents = [...new Set(allMatches.map(m => m.opponent))].sort();
     renderGridList('opponents-grid', opponents, 'opponent');
+    
+    // Years
+    populateYears(allMatches);
 }
 
 function renderGridList(elementId, items, type) {
@@ -117,26 +126,66 @@ window.resetView = function(viewId) {
 };
 
 async function fetchMatches(year = '') {
+    if (isLoading) return;
+    
+    // If year changed, reset pagination
+    if (year !== currentYearFilter) {
+        currentYearFilter = year;
+        currentPage = 1;
+        hasMore = true;
+        document.getElementById('matches-grid').innerHTML = '';
+    }
+
+    if (!hasMore) return;
+
+    isLoading = true;
     const grid = document.getElementById('matches-grid');
     
-    // Show loading state if needed (initial load)
-    if (!grid.children.length) {
+    // Show loading indicator if initial load
+    if (currentPage === 1 && !grid.children.length) {
         grid.innerHTML = Array(6).fill('<div class="match-card loading"></div>').join('');
     }
 
     try {
-        const url = year ? `${API_URL}?year=${year}` : API_URL;
+        const url = `${API_URL}?page=${currentPage}&limit=20${year ? `&year=${year}` : ''}`;
         const response = await fetch(url);
         const matches = await response.json();
 
-        renderStats(matches);
-        renderMatches(matches);
-        
-        if (!year) populateYears(matches);
+        if (currentPage === 1) {
+            grid.innerHTML = ''; // Clear loading skeletons
+        }
+
+        if (matches.length < 20) {
+            hasMore = false;
+        }
+
+        if (matches.length === 0 && currentPage === 1) {
+            grid.innerHTML = '<p class="no-results">No matches found for this criteria.</p>';
+        } else {
+            const matchesHTML = renderMatchesHTML(matches);
+            grid.insertAdjacentHTML('beforeend', matchesHTML);
+            currentPage++;
+        }
     } catch (error) {
         console.error('Error fetching matches:', error);
-        grid.innerHTML = '<p class="error">Failed to load matches. Please try again later.</p>';
+        if (currentPage === 1) {
+            grid.innerHTML = '<p class="error">Failed to load matches. Please try again later.</p>';
+        }
+    } finally {
+        isLoading = false;
     }
+}
+
+function setupInfiniteScroll() {
+    window.addEventListener('scroll', () => {
+        // Check if we're near the bottom of the page
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+            // Only fetch if we're on the home view
+            if (!document.getElementById('view-home').classList.contains('hidden')) {
+                fetchMatches(currentYearFilter);
+            }
+        }
+    });
 }
 
 function renderStats(matches) {
@@ -160,17 +209,6 @@ function renderStats(matches) {
     `;
 
     document.getElementById('stats-summary').innerHTML = summaryHTML;
-}
-
-function renderMatches(matches) {
-    const grid = document.getElementById('matches-grid');
-    
-    if (matches.length === 0) {
-        grid.innerHTML = '<p class="no-results">No matches found for this criteria.</p>';
-        return;
-    }
-
-    grid.innerHTML = renderMatchesHTML(matches);
 }
 
 function renderMatchesHTML(matches) {
@@ -208,6 +246,11 @@ function populateYears(matches) {
     const years = [...new Set(matches.map(m => new Date(m.matchDate).getFullYear()))].sort((a, b) => b - a);
     const select = document.getElementById('year-filter');
     
+    // Clear existing options except the first one
+    while (select.options.length > 1) {
+        select.remove(1);
+    }
+
     years.forEach(year => {
         const option = document.createElement('option');
         option.value = year;

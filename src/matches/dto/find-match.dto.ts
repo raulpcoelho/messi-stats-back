@@ -201,4 +201,24 @@ export class FindMatchDto {
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
   year?: number;
+
+  @ApiPropertyOptional({
+    name: 'page',
+    type: Number,
+    description: 'page number for pagination',
+  })
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
+  page?: number;
+
+  @ApiPropertyOptional({
+    name: 'limit',
+    type: Number,
+    description: 'number of items per page',
+  })
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
+  limit?: number;
 }
