@@ -11,49 +11,108 @@
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <div class="header-content">
-                <h1>Lionel Messi Stats</h1>
-                <p>A comprehensive database of the GOAT's career</p>
+    <div class="background-overlay"></div>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Messi Stats</h2>
             </div>
-            <div class="header-actions">
-                <a href="/api/docs" class="btn btn-secondary">API Docs</a>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="active" data-view="home"><span class="icon">🏠</span> Home</a></li>
+                    <li><a href="#" data-view="teams"><span class="icon">👕</span> Stats by Team</a></li>
+                    <li><a href="#" data-view="competitions"><span class="icon">🏆</span> Stats by Competition</a></li>
+                    <li><a href="#" data-view="opponents"><span class="icon">🆚</span> Stats by Opponent</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/api/docs" class="btn btn-sm btn-secondary">API Docs</a>
             </div>
-        </header>
+        </aside>
 
-        <main>
-            <section class="stats-summary" id="stats-summary">
-                <!-- Stats will be injected here -->
-                <div class="stat-card loading"></div>
-                <div class="stat-card loading"></div>
-                <div class="stat-card loading"></div>
-            </section>
+        <main class="main-content">
+            <header>
+                <div class="header-content">
+                    <h1>Lionel Messi Stats</h1>
+                    <p>The definitive record of football's greatest career</p>
+                </div>
+            </header>
 
-            <section class="matches-container">
-                <div class="section-header">
-                    <h2>Recent Matches</h2>
-                    <div class="filters">
-                        <select id="year-filter">
-                            <option value="">All Years</option>
-                            <!-- Years will be injected here -->
-                        </select>
+            <!-- Home View -->
+            <div id="view-home">
+                <section class="hero">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h2>The G.O.A.T.</h2>
+                            <p>Explore the legendary statistics of Lionel Messi, from his early days at Barcelona to his World Cup triumph.</p>
+                        </div>
+                        <div class="hero-image">
+                            <img src="messi.webp" alt="Lionel Messi" class="messi-img">
+                        </div>
                     </div>
-                </div>
-                
-                <div class="matches-grid" id="matches-grid">
-                    <!-- Matches will be injected here -->
-                    <div class="match-card loading"></div>
-                    <div class="match-card loading"></div>
-                    <div class="match-card loading"></div>
-                    <div class="match-card loading"></div>
-                </div>
-            </section>
-        </main>
+                </section>
 
-        <footer>
-            <p>Built with NestJS & Vanilla JS</p>
-        </footer>
+                <section class="stats-summary" id="stats-summary">
+                    <!-- Stats will be injected here -->
+                    <div class="stat-card loading"></div>
+                    <div class="stat-card loading"></div>
+                    <div class="stat-card loading"></div>
+                </section>
+
+                <section class="matches-container">
+                    <div class="section-header">
+                        <h2>Match History</h2>
+                        <div class="filters">
+                            <div class="select-wrapper">
+                                <select id="year-filter">
+                                    <option value="">All Years</option>
+                                    <!-- Years will be injected here -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="matches-grid" id="matches-grid">
+                        <!-- Matches will be injected here -->
+                        <div class="match-card loading"></div>
+                        <div class="match-card loading"></div>
+                        <div class="match-card loading"></div>
+                        <div class="match-card loading"></div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Teams View -->
+            <div id="view-teams" class="hidden">
+                <div class="section-header">
+                    <h2>Stats by Team</h2>
+                </div>
+                <div class="grid-list" id="teams-grid"></div>
+                <div id="team-stats" class="hidden"></div>
+            </div>
+
+            <!-- Competitions View -->
+            <div id="view-competitions" class="hidden">
+                <div class="section-header">
+                    <h2>Stats by Competition</h2>
+                </div>
+                <div class="grid-list" id="competitions-grid"></div>
+                <div id="competition-stats" class="hidden"></div>
+            </div>
+
+            <!-- Opponents View -->
+            <div id="view-opponents" class="hidden">
+                <div class="section-header">
+                    <h2>Stats by Opponent</h2>
+                </div>
+                <div class="grid-list" id="opponents-grid"></div>
+                <div id="opponent-stats" class="hidden"></div>
+            </div>
+
+            <footer>
+                <p>Built with NestJS & Vanilla JS</p>
+            </footer>
+        </main>
     </div>
 
     <script src="app.js"></script>

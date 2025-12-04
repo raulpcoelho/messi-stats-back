@@ -25,8 +25,15 @@ export class TypeOrmMatchesRepository implements MatchesRepository {
       .innerJoinAndSelect('m.opponent', 'opponent')
       .orderBy('m.matchDate', 'DESC');
 
+    const page = findMatchDto?.page || 1;
+    const limit = findMatchDto?.limit || 20;
+    const skip = (page - 1) * limit;
+
+    queryBuilder.skip(skip).take(limit);
+
     if (findMatchDto) {
       Object.keys(findMatchDto).forEach(key => {
+        if (key === 'page' || key === 'limit') return;
         const value = findMatchDto[key];
         TypeOrmMatchesRepository.applyFilter(queryBuilder, key, value);
       });
