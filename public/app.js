@@ -83,8 +83,8 @@ function renderMatches(matches) {
                 </div>
             </div>
             <div class="match-details">
-                <span class="tag">Goals: ${match.goals}</span>
-                <span class="tag">Assists: ${match.assists}</span>
+                <span class="tag ${match.goals > 0 ? 'highlight' : ''}">Goals: ${match.goals}</span>
+                <span class="tag ${match.assists > 0 ? 'highlight' : ''}">Assists: ${match.assists}</span>
             </div>
         </div>
     `}).join('');

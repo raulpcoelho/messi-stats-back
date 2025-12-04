@@ -11,11 +11,12 @@
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
+    <div class="background-overlay"></div>
     <div class="app-container">
         <header>
             <div class="header-content">
                 <h1>Lionel Messi Stats</h1>
-                <p>A comprehensive database of the GOAT's career</p>
+                <p>The definitive record of football's greatest career</p>
             </div>
             <div class="header-actions">
                 <a href="/api/docs" class="btn btn-secondary">API Docs</a>
@@ -23,6 +24,18 @@
         </header>
 
         <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h2>The G.O.A.T.</h2>
+                        <p>Explore the legendary statistics of Lionel Messi, from his early days at Barcelona to his World Cup triumph.</p>
+                    </div>
+                    <div class="hero-image">
+                        <img src="messi.webp" alt="Lionel Messi" class="messi-img">
+                    </div>
+                </div>
+            </section>
+
             <section class="stats-summary" id="stats-summary">
                 <!-- Stats will be injected here -->
                 <div class="stat-card loading"></div>
@@ -32,7 +45,7 @@
 
             <section class="matches-container">
                 <div class="section-header">
-                    <h2>Recent Matches</h2>
+                    <h2>Match History</h2>
                     <div class="filters">
                         <select id="year-filter">
                             <option value="">All Years</option>
