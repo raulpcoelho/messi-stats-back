@@ -5,7 +5,9 @@
       "src": "api/index.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["dist/**"]
+        "includeFiles": [
+          "dist/**"
+        ]
       }
     },
     {
@@ -14,6 +16,10 @@
     }
   ],
   "routes": [
+    {
+      "src": "/(.*\\.(jpg|jpeg|png|webp|svg|ico))",
+      "dest": "/public/$1"
+    },
     {
       "src": "/favicon.png",
       "dest": "/public/favicon.png"
