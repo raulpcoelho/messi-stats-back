@@ -6,19 +6,77 @@ let hasMore = true;
 let currentYearFilter = '';
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchAllMatches(); // Fetch all data once for client-side aggregation
-    fetchMatches(); // Initial load for home
+    fetchAllMatches();
+    fetchMatches();
     setupFilters();
     setupNavigation();
     setupInfiniteScroll();
+    setupScrollProgress();
+    setupBackToTop();
 });
+
+// Scroll Progress Bar
+function setupScrollProgress() {
+    const progressBar = document.getElementById('scroll-progress');
+    
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        progressBar.style.width = scrolled + '%';
+    });
+}
+
+// Back to Top Button
+function setupBackToTop() {
+    const backToTop = document.getElementById('back-to-top');
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    });
+    
+    backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+// Animated Counter
+function animateCounter(element, target, duration = 1500) {
+    const start = 0;
+    const startTime = performance.now();
+    
+    function updateCounter(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const current = Math.floor(start + (target - start) * easeOutQuart);
+        
+        element.textContent = current.toLocaleString();
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+        } else {
+            element.textContent = target.toLocaleString();
+            element.classList.add('counting');
+            setTimeout(() => element.classList.remove('counting'), 500);
+        }
+    }
+    
+    requestAnimationFrame(updateCounter);
+}
 
 async function fetchAllMatches() {
     try {
-        const response = await fetch(`${API_URL}?limit=10000`); // Fetch all for stats
+        const response = await fetch(`${API_URL}?limit=10000`);
         allMatches = await response.json();
         populateLists();
-        renderStats(allMatches); // Initial stats based on all matches
+        renderStats(allMatches);
     } catch (error) {
         console.error('Error fetching all matches:', error);
     }
@@ -33,11 +91,9 @@ function setupNavigation() {
             e.preventDefault();
             const viewName = link.dataset.view;
 
-            // Update active link
             links.forEach(l => l.classList.remove('active'));
             link.classList.add('active');
 
-            // Show selected view
             views.forEach(view => {
                 const el = document.getElementById(`view-${view}`);
                 if (view === viewName) {
@@ -46,24 +102,23 @@ function setupNavigation() {
                     el.classList.add('hidden');
                 }
             });
+            
+            // Scroll to top when switching views
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
 }
 
 function populateLists() {
-    // Teams
     const teams = [...new Set(allMatches.map(m => m.team))].sort();
     renderGridList('teams-grid', teams, 'team');
 
-    // Competitions
     const competitions = [...new Set(allMatches.map(m => m.competition))].sort();
     renderGridList('competitions-grid', competitions, 'competition');
 
-    // Opponents
     const opponents = [...new Set(allMatches.map(m => m.opponent))].sort();
     renderGridList('opponents-grid', opponents, 'opponent');
     
-    // Years
     populateYears(allMatches);
 }
 
@@ -72,42 +127,63 @@ function renderGridList(elementId, items, type) {
     container.innerHTML = items.map(item => `
         <div class="grid-item" onclick="showStats('${type}', '${item.replace(/'/g, "\\'")}')">
             <h3>${item}</h3>
-            <p>Click for stats</p>
+            <p>Click to view stats</p>
         </div>
     `).join('');
 }
 
 async function showStats(type, value) {
-    // Hide grid, show stats container
     const viewId = type === 'team' ? 'teams' : type === 'competition' ? 'competitions' : 'opponents';
     const statsContainer = document.getElementById(`${type === 'team' ? 'team' : type === 'competition' ? 'competition' : 'opponent'}-stats`);
     
-    // Filter matches
     const filteredMatches = allMatches.filter(m => m[type] === value);
     
-    // Calculate stats
     const totalMatches = filteredMatches.length;
     const goals = filteredMatches.reduce((acc, m) => acc + m.goals, 0);
     const assists = filteredMatches.reduce((acc, m) => acc + m.assists, 0);
+    const hatTricks = filteredMatches.reduce((acc, m) => acc + m.hatTricks, 0);
+    const motm = filteredMatches.reduce((acc, m) => acc + (m.motm ? 1 : 0), 0);
+    const minutes = filteredMatches.reduce((acc, m) => acc + m.minutesPlayed, 0);
 
     statsContainer.innerHTML = `
         <div class="section-header">
-            <h2>${value} Stats</h2>
-            <button class="btn btn-secondary" onclick="resetView('${viewId}')">Back to List</button>
+            <h2>${value}</h2>
+            <button class="btn btn-secondary" onclick="resetView('${viewId}')">← Back to List</button>
         </div>
         <div class="stats-summary">
             <div class="stat-card">
-                <div class="stat-label">Matches</div>
-                <div class="stat-value">${totalMatches}</div>
-            </div>
-            <div class="stat-card">
+                <div class="stat-icon">⚽</div>
                 <div class="stat-label">Goals</div>
-                <div class="stat-value">${goals}</div>
+                <div class="stat-value" data-target="${goals}">0</div>
             </div>
             <div class="stat-card">
+                <div class="stat-icon">🎯</div>
                 <div class="stat-label">Assists</div>
-                <div class="stat-value">${assists}</div>
+                <div class="stat-value" data-target="${assists}">0</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-label">Matches</div>
+                <div class="stat-value" data-target="${totalMatches}">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎩</div>
+                <div class="stat-label">Hat-tricks</div>
+                <div class="stat-value" data-target="${hatTricks}">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-label">MOTM</div>
+                <div class="stat-value" data-target="${motm}">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-label">Minutes</div>
+                <div class="stat-value" data-target="${minutes}">0</div>
+            </div>
+        </div>
+        <div class="section-header" style="margin-top: 2rem;">
+            <h2>Match History</h2>
         </div>
         <div class="matches-grid">
             ${renderMatchesHTML(filteredMatches)}
@@ -116,6 +192,13 @@ async function showStats(type, value) {
     
     document.getElementById(`${viewId}-grid`).classList.add('hidden');
     statsContainer.classList.remove('hidden');
+    
+    // Animate stats counters
+    setTimeout(() => {
+        statsContainer.querySelectorAll('.stat-value[data-target]').forEach(el => {
+            animateCounter(el, parseInt(el.dataset.target));
+        });
+    }, 100);
 }
 
 window.resetView = function(viewId) {
@@ -128,7 +211,6 @@ window.resetView = function(viewId) {
 async function fetchMatches(year = '') {
     if (isLoading) return;
     
-    // If year changed, reset pagination
     if (year !== currentYearFilter) {
         currentYearFilter = year;
         currentPage = 1;
@@ -141,7 +223,6 @@ async function fetchMatches(year = '') {
     isLoading = true;
     const grid = document.getElementById('matches-grid');
     
-    // Show loading indicator if initial load
     if (currentPage === 1 && !grid.children.length) {
         grid.innerHTML = Array(6).fill('<div class="match-card loading"></div>').join('');
     }
@@ -152,7 +233,7 @@ async function fetchMatches(year = '') {
         const matches = await response.json();
 
         if (currentPage === 1) {
-            grid.innerHTML = ''; // Clear loading skeletons
+            grid.innerHTML = '';
         }
 
         if (matches.length < 20) {
@@ -178,9 +259,7 @@ async function fetchMatches(year = '') {
 
 function setupInfiniteScroll() {
     window.addEventListener('scroll', () => {
-        // Check if we're near the bottom of the page
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
-            // Only fetch if we're on the home view
             if (!document.getElementById('view-home').classList.contains('hidden')) {
                 fetchMatches(currentYearFilter);
             }
@@ -192,23 +271,58 @@ function renderStats(matches) {
     const totalMatches = matches.length;
     const totalGoals = matches.reduce((acc, match) => acc + (match.goals || 0), 0);
     const totalAssists = matches.reduce((acc, match) => acc + (match.assists || 0), 0);
+    const totalHatTricks = matches.reduce((acc, match) => acc + (match.hatTricks || 0), 0);
+    const totalMotm = matches.reduce((acc, match) => acc + (match.motm ? 1 : 0), 0);
+    const totalMinutes = matches.reduce((acc, match) => acc + (match.minutesPlayed || 0), 0);
 
     const summaryHTML = `
         <div class="stat-card">
-            <div class="stat-label">Total Matches</div>
-            <div class="stat-value">${totalMatches}</div>
-        </div>
-        <div class="stat-card">
+            <div class="stat-icon">⚽</div>
             <div class="stat-label">Total Goals</div>
-            <div class="stat-value">${totalGoals}</div>
+            <div class="stat-value" data-target="${totalGoals}">0</div>
         </div>
         <div class="stat-card">
+            <div class="stat-icon">🎯</div>
             <div class="stat-label">Total Assists</div>
-            <div class="stat-value">${totalAssists}</div>
+            <div class="stat-value" data-target="${totalAssists}">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-label">Total Matches</div>
+            <div class="stat-value" data-target="${totalMatches}">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🎩</div>
+            <div class="stat-label">Hat-tricks</div>
+            <div class="stat-value" data-target="${totalHatTricks}">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-label">Man of the Match</div>
+            <div class="stat-value" data-target="${totalMotm}">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-label">Minutes Played</div>
+            <div class="stat-value" data-target="${totalMinutes}">0</div>
         </div>
     `;
 
     document.getElementById('stats-summary').innerHTML = summaryHTML;
+    
+    // Animate counters after rendering
+    setTimeout(() => {
+        document.querySelectorAll('#stats-summary .stat-value[data-target]').forEach(el => {
+            animateCounter(el, parseInt(el.dataset.target));
+        });
+    }, 300);
+}
+
+function getResultBadge(match) {
+    const result = match.teamScore > match.opponentScore ? 'win' : 
+                   match.teamScore < match.opponentScore ? 'loss' : 'draw';
+    const label = result === 'win' ? 'W' : result === 'loss' ? 'L' : 'D';
+    return `<span class="result-badge ${result}">${label}</span>`;
 }
 
 function renderMatchesHTML(matches) {
@@ -220,23 +334,26 @@ function renderMatchesHTML(matches) {
 
         return `
         <div class="match-card">
+            ${getResultBadge(match)}
             <div class="match-header">
-                <span>${new Date(match.matchDate).toLocaleDateString()}</span>
-                <span>${match.competition}</span>
+                <span class="match-date">📅 ${new Date(match.matchDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                <span class="match-competition">${match.competition}</span>
             </div>
             <div class="match-teams">
                 <div class="team">
-                    <span>${homeTeam}</span>
+                    <span class="team-name">${homeTeam}</span>
                     <span class="score">${homeScore}</span>
                 </div>
                 <div class="team">
-                    <span>${awayTeam}</span>
+                    <span class="team-name">${awayTeam}</span>
                     <span class="score">${awayScore}</span>
                 </div>
             </div>
             <div class="match-details">
-                <span class="tag ${match.goals > 0 ? 'highlight' : ''}">Goals: ${match.goals}</span>
-                <span class="tag ${match.assists > 0 ? 'highlight' : ''}">Assists: ${match.assists}</span>
+                <span class="tag ${match.goals > 0 ? 'highlight' : ''}">⚽ ${match.goals} goal${match.goals !== 1 ? 's' : ''}</span>
+                <span class="tag ${match.assists > 0 ? 'highlight' : ''}">🎯 ${match.assists} assist${match.assists !== 1 ? 's' : ''}</span>
+                ${match.motm ? '<span class="tag highlight-gold">⭐ MOTM</span>' : ''}
+                ${match.hatTricks > 0 ? '<span class="tag highlight-gold">🎩 Hat-trick</span>' : ''}
             </div>
         </div>
     `}).join('');
@@ -246,7 +363,6 @@ function populateYears(matches) {
     const years = [...new Set(matches.map(m => new Date(m.matchDate).getFullYear()))].sort((a, b) => b - a);
     const select = document.getElementById('year-filter');
     
-    // Clear existing options except the first one
     while (select.options.length > 1) {
         select.remove(1);
     }

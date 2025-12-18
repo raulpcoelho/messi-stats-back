@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lionel Messi Stats</title>
+    <title>Lionel Messi Stats - Career Statistics</title>
+    <meta name="description" content="Explore the legendary career statistics of Lionel Messi. Goals, assists, hat-tricks, and more from Barcelona to Inter Miami.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <!-- Background Effects -->
     <div class="background-overlay"></div>
+    <div class="background-image"></div>
+
     <div class="app-layout">
         <aside class="sidebar">
             <div class="sidebar-header">
+                <div class="sidebar-logo">⚽</div>
                 <h2>Messi Stats</h2>
             </div>
             <nav class="sidebar-nav">
@@ -26,7 +34,7 @@
                 </ul>
             </nav>
             <div class="sidebar-footer">
-                <a href="/api/docs" class="btn btn-sm btn-secondary">API Docs</a>
+                <a href="/api/docs" class="btn btn-sm btn-secondary">📚 API Documentation</a>
             </div>
         </aside>
 
@@ -43,8 +51,9 @@
                 <section class="hero">
                     <div class="hero-content">
                         <div class="hero-text">
-                            <h2>The G.O.A.T.</h2>
-                            <p>Explore the legendary statistics of Lionel Messi, from his early days at Barcelona to his World Cup triumph.</p>
+                            <span class="hero-badge">🏆 8× Ballon d'Or Winner</span>
+                            <h2>The <span>G.O.A.T.</span></h2>
+                            <p>Explore the legendary statistics of Lionel Messi, from his early days at Barcelona to his World Cup triumph and beyond.</p>
                         </div>
                         <div class="hero-image">
                             <img src="messi.webp" alt="Lionel Messi" class="messi-img">
@@ -54,6 +63,9 @@
 
                 <section class="stats-summary" id="stats-summary">
                     <!-- Stats will be injected here -->
+                    <div class="stat-card loading"></div>
+                    <div class="stat-card loading"></div>
+                    <div class="stat-card loading"></div>
                     <div class="stat-card loading"></div>
                     <div class="stat-card loading"></div>
                     <div class="stat-card loading"></div>
@@ -74,6 +86,8 @@
                     
                     <div class="matches-grid" id="matches-grid">
                         <!-- Matches will be injected here -->
+                        <div class="match-card loading"></div>
+                        <div class="match-card loading"></div>
                         <div class="match-card loading"></div>
                         <div class="match-card loading"></div>
                         <div class="match-card loading"></div>
@@ -110,10 +124,13 @@
             </div>
 
             <footer>
-                <p>Built with NestJS & Vanilla JS</p>
+                <p>Built with ❤️ using NestJS & Vanilla JS | <a href="/api/docs">API Documentation</a></p>
             </footer>
         </main>
     </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" title="Back to top">↑</button>
 
     <script src="app.js"></script>
 </body>
