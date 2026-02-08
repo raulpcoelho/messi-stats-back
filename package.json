@@ -38,7 +38,7 @@
     "typeorm:create-seed:win": "npm run typeorm -- migration:create ./src/database/seeds/%npm_config_name%"
   },
   "dependencies": {
-    "@nestjs/cli": "^11.0.14",
+    "@nestjs/cli": "^11.0.16",
     "@nestjs/common": "^11.1.9",
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.0.10",
