@@ -1,0 +1,4 @@
+interface:
+  display_name: "Atualizar stats locais"
+  short_description: "Importa novas partidas no banco local"
+  default_prompt: "Use $update-local-stats para buscar e importar as novas estatísticas no banco local."
